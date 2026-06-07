@@ -80,7 +80,18 @@ export default async function TopicDetailPage({
 
             return (
               <article key={item.id} className="story-block">
-                <p>{body}</p>
+                <div
+                className="story-text"
+                dangerouslySetInnerHTML={{
+                  __html: body
+                    .split("\n\n")
+                    .map(
+                      paragraph =>
+                        `<p>${paragraph.replace(/\n/g,"<br/>")}</p>`
+                    )
+                    .join("")
+                }}
+                />
                 <p className="muted" style={{ fontSize: 14 }}>
                   {t.by} {item.users?.name || t.anonymous}
                 </p>

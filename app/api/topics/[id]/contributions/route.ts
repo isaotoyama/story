@@ -17,7 +17,9 @@ export async function POST(
     }
 
     const body = await request.json();
-    const content = body.content?.trim();
+    const content = body.content
+    ?.replace(/\r\n/g, "\n")
+    ?.trim();
 
     if (!content) {
       return NextResponse.json({ error: "Content is required" }, { status: 400 });

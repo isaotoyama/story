@@ -231,3 +231,17 @@ select {
   color: var(--text);
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
 }
+
+.story-text {
+  white-space: pre-wrap;
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+.story-text p {
+  margin: 0 0 1.4rem 0;
+}
+
+.story-text p:last-child {
+  margin-bottom: 0;
+}
