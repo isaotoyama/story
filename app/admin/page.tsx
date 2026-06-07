@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
@@ -7,7 +6,21 @@ export default async function AdminPage() {
   const admin = await requireAdmin();
 
   if (!admin) {
-    redirect("/");
+    return (
+      <main className="page">
+        <section className="card form" style={{ textAlign: "center" }}>
+          <span className="badge">Admin</span>
+          <h1 className="section-title">Admin access required</h1>
+          <p className="muted">
+            You are signed in, but this account is not listed in ADMIN_EMAILS.
+          </p>
+          <p className="muted">
+            Add your Clerk email to .env.local and Vercel environment variables.
+          </p>
+          <Link href="/" className="btn">Back home</Link>
+        </section>
+      </main>
+    );
   }
 
   const { data: pending } = await supabaseAdmin
@@ -48,8 +61,8 @@ export default async function AdminPage() {
     <main className="page">
       <section className="hero" style={{ paddingTop: 32 }}>
         <div className="hero-label">Admin moderation</div>
-        <h1>Review topics and story posts.</h1>
-        <p>Only approved admin accounts can access this page.</p>
+        <h1>Review topics and stories.</h1>
+        <p>Logged in as {admin.emailAddresses?.[0]?.emailAddress}</p>
       </section>
 
       <section>
@@ -66,16 +79,25 @@ export default async function AdminPage() {
             <div key={item.id} className="card">
               <span className="badge">Pending</span>
               <h3>{item.topics?.title || "Story"}</h3>
-              <p className="muted">By {item.users?.name || item.users?.email || "Unknown"}</p>
+              <p className="muted">
+                By {item.users?.name || item.users?.email || "Unknown"}
+              </p>
+
               <div className="story-text">{item.content}</div>
 
-              <form action={`/api/contributions/${item.id}/approve`} method="post">
-                <button className="btn btn-primary" type="submit">Approve</button>
-              </form>
+              <div style={{ display: "flex", gap: 8, marginTop: 18 }}>
+                <form action={`/api/contributions/${item.id}/approve`} method="post">
+                  <button className="btn btn-primary" type="submit">
+                    Approve
+                  </button>
+                </form>
 
-              <form action={`/api/contributions/${item.id}/delete`} method="post" style={{ marginTop: 8 }}>
-                <button className="btn btn-danger" type="submit">Delete</button>
-              </form>
+                <form action={`/api/contributions/${item.id}/delete`} method="post">
+                  <button className="btn btn-danger" type="submit">
+                    Delete
+                  </button>
+                </form>
+              </div>
             </div>
           ))}
         </div>
