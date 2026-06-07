@@ -86,7 +86,7 @@ export default async function TopicDetailPage({
                   __html: body
                     .split("\n\n")
                     .map(
-                      paragraph =>
+                      (paragraph: string) =>
                         `<p>${paragraph.replace(/\n/g,"<br/>")}</p>`
                     )
                     .join("")
