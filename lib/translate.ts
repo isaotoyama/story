@@ -10,26 +10,25 @@ function hasJapanese(text: string) {
 
 export async function translateToJapaneseIfEnglish(text: string) {
   if (!text || hasJapanese(text)) {
-    return {
-      sourceLanguage: "ja",
-      japanese: text,
-    };
+    return { sourceLanguage: "ja", japanese: text };
   }
 
   if (!process.env.OPENAI_API_KEY) {
-    return {
-      sourceLanguage: "en",
-      japanese: null,
-    };
+    return { sourceLanguage: "en", japanese: null };
   }
 
-  const response = await client.responses.create({
-    model: process.env.OPENAI_MODEL || "gpt-5.5",
-    input: `Translate this story contribution into natural Japanese. Preserve tone, imagery, names, and paragraph breaks. Return only the Japanese translation:\n\n${text}`,
-  });
+  try {
+    const response = await client.responses.create({
+      model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+      input: `Translate this story contribution into natural Japanese. Return only Japanese:\n\n${text}`,
+    });
 
-  return {
-    sourceLanguage: "en",
-    japanese: response.output_text?.trim() || null,
-  };
+    return {
+      sourceLanguage: "en",
+      japanese: response.output_text?.trim() || null,
+    };
+  } catch (error) {
+    console.error("Translation failed:", error);
+    return { sourceLanguage: "en", japanese: null };
+  }
 }
