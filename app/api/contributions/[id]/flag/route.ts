@@ -13,15 +13,23 @@ export async function POST(
   }
 
   const { id } = await params;
+  const formData = await request.formData();
+
+  const reason =
+    String(formData.get("reason") || "").trim() ||
+    "This story contribution is outside of the community guidelines.";
+
+  const deleteAfter = new Date();
+  deleteAfter.setDate(deleteAfter.getDate() + 14);
 
   const { error } = await supabaseAdmin
     .from("story_contributions")
     .update({
-      approved: true,
-      moderation_status: "approved",
-      moderation_reason: null,
-      flagged_at: null,
-      delete_after: null
+      moderation_status: "flagged",
+      moderation_reason: reason,
+      flagged_at: new Date().toISOString(),
+      delete_after: deleteAfter.toISOString(),
+      approved: true
     })
     .eq("id", id);
 

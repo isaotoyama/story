@@ -31,6 +31,9 @@ export default async function TopicDetailPage({
         id,
         content,
         content_ja,
+        moderation_status,
+        moderation_reason,
+        delete_after,
         order_index,
         approved,
         created_at,
@@ -79,7 +82,18 @@ export default async function TopicDetailPage({
             const body = isJa && item.content_ja ? item.content_ja : item.content;
 
             return (
-              <article key={item.id} className="story-block">
+              <article
+                key={item.id}
+                className={`story-block ${item.moderation_status === "flagged" ? "flagged-box" : ""}`}
+              >
+                {item.moderation_status === "flagged" && (
+                  <div className="flag-warning">
+                    This statement is flagged as outside of the community guidelines.
+                    The author may edit it. If it is not corrected, it may be deleted after 14 days.
+                    <br />
+                    Reason: {item.moderation_reason || "Guideline violation"}
+                  </div>
+                )}
                 <div
                 className="story-text"
                 dangerouslySetInnerHTML={{

@@ -34,6 +34,7 @@ export default async function RootLayout({
                 <Link href="/topics" className="nav-link">{t.explore}</Link>
                 <Link href="/topics/new" className="nav-link">{t.create}</Link>
                 <Link href="/profile" className="nav-link">{t.profile}</Link>
+                <Link href="/guidelines" className="nav-link">Guidelines</Link>
                 <Link href="/admin" className="nav-link">Admin</Link>
 
                 <div className="nav-actions">

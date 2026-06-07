@@ -23,5 +23,5 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.redirect(new URL("/admin", request.url));
 }

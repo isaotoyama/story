@@ -245,3 +245,23 @@ select {
 .story-text p:last-child {
   margin-bottom: 0;
 }
+
+.guideline-list {
+  color: var(--muted);
+  line-height: 1.8;
+  padding-left: 1.2rem;
+}
+
+.flagged-box {
+  border: 1px solid rgba(255, 149, 0, 0.35);
+  background: rgba(255, 245, 230, 0.9);
+}
+
+.flag-warning {
+  margin-bottom: 16px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: rgba(255, 149, 0, 0.12);
+  color: #7a3f00;
+  font-weight: 600;
+}
