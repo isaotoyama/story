@@ -16,7 +16,7 @@ export async function POST(
 
   const { error } = await supabaseAdmin
     .from("story_contributions")
-    .update({ approved: true })
+    .delete()
     .eq("id", id);
 
   if (error) {

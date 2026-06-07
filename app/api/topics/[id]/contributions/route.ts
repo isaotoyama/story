@@ -17,6 +17,13 @@ export async function POST(
     }
 
     const body = await request.json();
+
+    if (body.website) {
+      return NextResponse.json(
+        { error: "Bot detected" },
+        { status: 400 }
+      );
+    }
     const content = body.content
     ?.replace(/\r\n/g, "\n")
     ?.trim();
@@ -73,7 +80,7 @@ export async function POST(
         content_ja: translation.japanese,
         source_language: translation.sourceLanguage,
         order_index: count || 0,
-        approved: true,
+        approved: false,
       })
       .select()
       .single();
@@ -82,7 +89,7 @@ export async function POST(
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ contribution });
+    return NextResponse.json({ contribution, translation });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message || "Something went wrong" },

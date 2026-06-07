@@ -8,6 +8,7 @@ export function ContributionForm({ topicId }: { topicId: string }) {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [honeypot, setHoneypot] = useState("");
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -25,7 +26,10 @@ export function ContributionForm({ topicId }: { topicId: string }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({
+        content,
+        website: honeypot,
+      }),
     });
 
     setIsSubmitting(false);
@@ -47,6 +51,23 @@ export function ContributionForm({ topicId }: { topicId: string }) {
       <p className="muted">
         Use line breaks to create paragraphs. Press return twice between scenes.
       </p>
+
+      <input
+        type="text"
+        name="website"
+        autoComplete="off"
+        tabIndex={-1}
+        value={honeypot}
+        onChange={(e)=>setHoneypot(e.target.value)}
+        style={{
+          position:"absolute",
+          left:"-9999px",
+          opacity:0,
+          width:1,
+          height:1,
+          pointerEvents:"none"
+        }}
+      />
 
       <textarea
         className="textarea"
